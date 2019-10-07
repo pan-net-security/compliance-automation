@@ -146,6 +146,26 @@ $ ansible-playbook <playbook>.yml
 Telekom Security - Security Requirements:
 * SecReq 3.04: Secure Shell (SSH)
 
+## Development
+
+Pre-requisite:
+- Vagrant
+```
+$ which -s vagrant && echo 'Vagrant found' || echo 'Vagrant not found'
+Vagrant found
+$ which -s VirtualBox && echo 'VirtualBox found' || echo 'VirtualBox not found'
+Vagrant found
+```
+
+Virtual environment & tests:
+
+```
+virtualenv -p python3 .venv
+. .venv/bin/activate
+pip install molecule[vagrant] python-vagrant
+molecule test
+````
+
 ## License
 
 Apache License, Version 2.0
