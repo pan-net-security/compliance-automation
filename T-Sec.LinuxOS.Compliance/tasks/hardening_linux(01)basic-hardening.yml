@@ -375,6 +375,7 @@
   shell: grep "^root:[*\!]:" /etc/shadow
   register: check_root_pw
   changed_when: false
+  ignore_errors: true
   when: ansible_distribution == "Ubuntu" and
       ( config_single_user_mode and config_root_password )
 
