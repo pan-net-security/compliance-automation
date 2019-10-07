@@ -1,0 +1,11 @@
+---
+- name: Prepare
+  hosts: all
+  gather_facts: false
+  become: true
+  tasks:
+    - name: "Install required packages for testing"
+      apt:
+        name:
+          - ssh
+        state: present
