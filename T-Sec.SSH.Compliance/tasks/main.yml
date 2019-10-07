@@ -13,14 +13,14 @@
       - "{{ ansible_os_family }}.yml"
       - "{{ ansible_distribution }}-{{ ansible_distribution_major_version }}.yml"
       - "{{ ansible_distribution }}.yml"
-      skip: true
+      errors: "ignore"
 
 # Check settings if new user should be configured.
 - name: end playbook if user settings are wrong
   fail:
     msg: "ERROR: Miss one or more variables for user settings! Please correct!"
   when: ( config_new_user and not ansible_check_mode ) and
-        ( user_name == "" or password == "" or public_key_file == "")
+        ( user_name|d("")|length > 0 or password|d("")|length > 0 or public_key_file|d("")|length > 0)
 
 # Generates a user with root rights and ssh access with public-key.
 - name: configure a default user with root rights
@@ -42,5 +42,8 @@
   when: config_new_user
 
 # 01 ssh requirements
-- include_vars: vars_ssh(01)ssh-requirements.yml
-- import_tasks: hardening_ssh(01)ssh-requirements.yml
+- name: "Include Variables"
+  include_vars: vars_ssh(01)ssh-requirements.yml
+
+- name: "Import Tasks"
+  import_tasks: hardening_ssh(01)ssh-requirements.yml
