@@ -7,5 +7,5 @@
     - name: "Install required packages for testing"
       apt:
         name:
-          - ssh
+          - openssh-server
         state: present
