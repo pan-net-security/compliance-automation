@@ -28,7 +28,7 @@
       - "{{ ansible_os_family }}.yml"
       - "{{ ansible_distribution }}-{{ ansible_distribution_major_version }}.yml"
       - "{{ ansible_distribution }}.yml"
-      skip: true
+      skip: true # not deprecated, read https://github.com/ansible/ansible/pull/60161
 
 # System update (as requested with Req 19) must be done before security
 # configuration. That's why relevante tasks are placed here!
