@@ -124,6 +124,7 @@ of the systems you like to harden.
 | 'config_syslog' | false |  Defines if Syslog should be configured. |
 | 'syslog_type' | rsyslog | Defines type of syslog to use. |
 | 'syslog_server' |  | Defines IP addresses of Syslog server(s) to use. |
+| 'config_restart_handlers' | true | Defines whether service restart handlers should be triggered. |
 
 Additional variables are located in the following files in directory '/vars':
 
