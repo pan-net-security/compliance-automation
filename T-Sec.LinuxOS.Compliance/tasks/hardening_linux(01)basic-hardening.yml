@@ -385,7 +385,7 @@
       ( config_single_user_mode and config_root_password )
 
 - name: req-026.2 generate a secret root password
-  shell: date +%s | sha256sum | base64 | head -c 15 ; echo
+  shell: cat /dev/urandom | tr -dc _A-Za-z0-9- | head -c${1:-32}
   register: root_password
   changed_when: false
   when:
