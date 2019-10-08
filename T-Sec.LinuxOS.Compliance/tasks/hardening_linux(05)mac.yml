@@ -18,18 +18,20 @@
 
 - name: req-053.1 enable selinux in grub
   lineinfile:
-    dest: '/etc/default/grub'
+    dest: '/etc/default/grub.d/99-compliance-mac.cfg'
+    create: yes
     regexp: '^GRUB_CMDLINE_LINUX_DEFAULT=(.*)'
-    line: 'GRUB_CMDLINE_LINUX_DEFAULT="quiet"'
+    line: 'GRUB_CMDLINE_LINUX_DEFAULT="$GRUB_CMDLINE_LINUX_DEFAULT selinux=1 enforcing=1"'
   notify: update grub
   when: mac_type == "selinux" and
       ( config_mac and config_selinux_grub )
 
 - name: req-053.2 enable selinux in grub
   lineinfile:
-    dest: '/etc/default/grub'
+    dest: '/etc/default/grub.d/99-compliance-mac.cfg'
+    create: yes
     regexp: '^GRUB_CMDLINE_LINUX=(.*)'
-    line: 'GRUB_CMDLINE_LINUX=""'
+    line: 'GRUB_CMDLINE_LINUX="$GRUB_CMDLINE_LINUX selinux=1 enforcing=1"'
   notify: update grub
   when: mac_type == "selinux" and
       ( config_mac and config_selinux_grub )
@@ -74,18 +76,20 @@
 
 - name: req-058.1 enable apparmor in grub
   lineinfile:
-    dest: '/etc/default/grub'
+    dest: '/etc/default/grub.d/99-compliance-mac.cfg'
+    create: yes
     regexp: '^GRUB_CMDLINE_LINUX_DEFAULT=(.*)'
-    line: 'GRUB_CMDLINE_LINUX_DEFAULT="quiet"'
+    line: 'GRUB_CMDLINE_LINUX_DEFAULT="$GRUB_CMDLINE_LINUX_DEFAULT apparmor=1 security=apparmor"'
   notify: update grub
   when: mac_type == "apparmor" and
       ( config_mac and config_apparmor_grub )
 
 - name: req-058.2 enable apparmor in grub
   lineinfile:
-    dest: '/etc/default/grub'
+    dest: '/etc/default/grub.d/99-compliance-mac.cfg'
+    create: yes
     regexp: '^GRUB_CMDLINE_LINUX=(.*)'
-    line: 'GRUB_CMDLINE_LINUX=""'
+    line: 'GRUB_CMDLINE_LINUX="$GRUB_CMDLINE_LINUX apparmor=1 security=apparmor"'
   notify: update grub
   when: mac_type == "apparmor" and
       ( config_mac and config_apparmor_grub )

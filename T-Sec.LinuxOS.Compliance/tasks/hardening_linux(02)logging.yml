@@ -9,9 +9,10 @@
 
 - name: req-030.1 enable logging before auditd starts
   lineinfile:
-    path: '/etc/default/grub'
+    path: '/etc/default/grub.d/98-compliance-audit.cfg'
+    create: yes
     regexp: "^GRUB_CMDLINE_LINUX=(.*)"
-    line: GRUB_CMDLINE_LINUX="audit=1"
+    line: 'GRUB_CMDLINE_LINUX="$GRUB_CMDLINE_LINUX audit=1"'
     state: present
   notify: update grub
   when: config_grub_logging|bool
