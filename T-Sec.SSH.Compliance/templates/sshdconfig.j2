@@ -47,6 +47,7 @@ PermitRootLogin {{ 'without-password' if (allow_root_login|bool) else 'no' }}
 StrictModes {{ 'yes' if (strict_mode|bool) else 'no' }}
 
 PubkeyAuthentication {{ 'yes' if (pubkey_auth|bool) else 'no' }}
+AuthorizedKeysFile {{ ssh_authorizedkeysfile }}
 
 IgnoreRhosts {{ 'yes' if (ignore_rhosts|bool) else 'no' }}
 
