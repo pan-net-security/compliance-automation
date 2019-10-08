@@ -108,6 +108,7 @@ of the systems you like to harden.
 | 'password' | none | Defines password for new user. |
 | 'public_key_file' | {{ role_path }}/files/id_rsa.pub |  Defines path to public-key file (e.g. id_rsa.pub). |
 | 'group_sudo' | sudo | Defines group used for sudo. |
+| 'config_restart_handlers' | true | Defines whether service restart handlers should be triggered. |
 
 Additional variables are located in the following files in directory '/vars':
 
