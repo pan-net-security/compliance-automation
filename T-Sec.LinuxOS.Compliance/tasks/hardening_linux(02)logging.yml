@@ -9,9 +9,10 @@
 
 - name: req-030.1 enable logging before auditd starts
   lineinfile:
-    path: '/etc/default/grub'
+    path: '/etc/default/grub.d/98-compliance-audit.cfg'
+    create: yes
     regexp: "^GRUB_CMDLINE_LINUX=(.*)"
-    line: GRUB_CMDLINE_LINUX="audit=1"
+    line: 'GRUB_CMDLINE_LINUX="$GRUB_CMDLINE_LINUX audit=1"'
     state: present
   notify: update grub
   when: config_grub_logging|bool
@@ -59,10 +60,17 @@
 
 - name: req-032.5 change chronyd file
   lineinfile:
+    dest: '/etc/default/chrony'
+    regexp: '^DAEMON_OPTS=(.*)'
+    line: 'DAEMON_OPTS="-u _chrony"'
+  when: config_ntp and ntp_software == "chrony" and ansible_os_family == "Debian"
+
+- name: req-032.5 change chronyd file
+  lineinfile:
     dest: '/etc/sysconfig/chronyd'
     regexp: '^OPTIONS=(.*)'
     line: 'OPTIONS="-u chrony"'
-  when: config_ntp and ntp_software == "chrony"
+  when: config_ntp and ntp_software == "chrony" and ansible_os_family == "RedHat"
 
 # Req 33:	Auditd service must be used to log security relevant events.
 
