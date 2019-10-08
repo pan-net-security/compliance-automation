@@ -84,3 +84,9 @@ use_timezone: "Europe/Berlin"
 config_syslog: false
 syslog_type: "rsyslog"
 syslog_server: ""
+
+# Additional options
+
+# Disable the following parameter to stop service restart handlers
+# (useful for OS image building as opposed to live host deployment).
+config_restart_handlers: true
