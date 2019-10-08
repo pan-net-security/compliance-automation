@@ -60,10 +60,17 @@
 
 - name: req-032.5 change chronyd file
   lineinfile:
+    dest: '/etc/default/chrony'
+    regexp: '^DAEMON_OPTS=(.*)'
+    line: 'DAEMON_OPTS="-u _chrony"'
+  when: config_ntp and ntp_software == "chrony" and ansible_os_family == "Debian"
+
+- name: req-032.5 change chronyd file
+  lineinfile:
     dest: '/etc/sysconfig/chronyd'
     regexp: '^OPTIONS=(.*)'
     line: 'OPTIONS="-u chrony"'
-  when: config_ntp and ntp_software == "chrony"
+  when: config_ntp and ntp_software == "chrony" and ansible_os_family == "RedHat"
 
 # Req 33:	Auditd service must be used to log security relevant events.
 
