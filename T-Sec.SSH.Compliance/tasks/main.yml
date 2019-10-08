@@ -13,7 +13,7 @@
       - "{{ ansible_os_family }}.yml"
       - "{{ ansible_distribution }}-{{ ansible_distribution_major_version }}.yml"
       - "{{ ansible_distribution }}.yml"
-      errors: "ignore"
+      skip: true # not deprecated, read https://github.com/ansible/ansible/pull/60161
 
 # Check settings if new user should be configured.
 - name: end playbook if user settings are wrong
