@@ -1,25 +1,21 @@
-<a href="images/tsec-logo.png"><img align="right" src="images/tsec-logo.png" alt="Telekom Security" height="80" width="80"></a>
-# Telekom Security Compliance Automation
+<img align="left" src="images/telekom.png" alt="Deutsche Telekom Pan-Net" height="80" width="80">
 
-Company: [T-systems International GmbH](https://www.t-systems.com)
-
-Author: [Telekom Security](https://security.telekom.com/)   
-
-E-Mail: [security.automation@telekom.de](security.automation@telekom.de)
-
-Date: 28. Jan 2019
+# DT Pan-Net, s.r.o - Security Compliance
 
 -------------------------------------------------------------------------------
 
 ## Description
 
-The intention of the Telekom Security Compliance Automation (TSCA) is to provide
-scripts for automated hardening of operating systems and software solutions based on security requirements of Deutsche Telekom group.
+_This is a fork from the original work started at [Telekom Security](https://github.com/telekomsecurity/TelekomSecurity.Compliance.Automation)._
 
-Automation of security is mandatory to support the demands of scaling and high frequently changing virtualized and cloudified environments. This is also mandatory for new working concepts like agile development, CI/CD and DevOps.
-Nevertheless, the hardening scripts can also be used for traditional bare metal systems.
+The goal of the project is to provide a quick and reliable way to reach compliance against Deutsche Telekom group-wide security Requirements.
 
-With automating of security hardening it is possible to reach a constant and reproducible security level during the complete lifetime of a system.
+NOTE: changing default values is HIGHLY **not** recommended.
+
+## Features
+
+- Can be run in live systems
+- Can be run at image-creation time
 
 ## Available Scripts
 
@@ -28,8 +24,25 @@ With automating of security hardening it is possible to reach a constant and rep
   1. [SSH](/T-Sec.SSH.Compliance)
   2. [Linux OS for Servers](/T-Sec.LinuxOS.Compliance)
 
+## Usage
+
+You can't use ansible-galaxy since the roles are packed in one repository, but here is a way to deal with that:
+
+```
+TEMP_DIR=$(mktemp -d)
+git clone --depth 1 -b v0.1 https://github.com/pan-net-security/compliance-automation.git $TEMP_DIR
+mv $TEMP_DIR/T-Sec.* /etc/ansible/roles
+rm -fr $TEMP_DIR
+```
+
 ## References
 
 Telekom Security - Security Requirements:
   1. SecReq 3.04: Secure Shell
   2. SecReq 3.65: Linux OS for Servers
+
+-------------------------------------------------------------------------------
+
+Authors:
+- [Telekom Security](https://security.telekom.com/) (original work)
+- Deutsche Telekom Pan-Net
