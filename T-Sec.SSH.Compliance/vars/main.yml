@@ -10,10 +10,3 @@
 #  Note: Changing variables in this file could affect security compliance!
 #
 # ========================================================================
-
-# Location(s) of SSH authorized key lists since multiple can potentially
-# be used, e. g. '.ssh/authorized_keys /etc/ssh/authorized_keys/%u'
-# Make sure that none of the files is modifiable by unauthorized users
-# if changing this setting!
-# Default value is '.ssh/authorized_keys'
-ssh_authorizedkeysfile: '.ssh/authorized_keys'
