@@ -122,3 +122,12 @@ sftp_agent_forwarding: false
 sftp_password_auth: false
 sftp_root_login: false
 sftp_x11_forwardning: false
+
+# Additional settings
+
+# Location(s) of SSH authorized key lists since multiple can potentially
+# be used, e. g. '.ssh/authorized_keys /etc/ssh/authorized_keys/%u'
+# Make sure that none of the files is modifiable by unauthorized users
+# if changing this setting!
+# Default value is '.ssh/authorized_keys'
+ssh_authorizedkeysfile: '.ssh/authorized_keys'
