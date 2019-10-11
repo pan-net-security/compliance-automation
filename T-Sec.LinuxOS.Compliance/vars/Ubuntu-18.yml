@@ -11,6 +11,7 @@
 #
 # ========================================================================
 
+grub_update_tool_package: "grub2-common"
 grub_update_tool: "update-grub"
 
 # Req 1: Unused services and protocols must be deactivated.

@@ -11,6 +11,7 @@
 #
 # ========================================================================
 
+grub_update_tool_package: "grub2"
 grub_update_tool: "grub2-mkconfig -o /boot/grub2/grub.cfg"
 
 # Req 1: Unused services and protocols must be deactivated.
@@ -67,6 +68,9 @@ os_pam_cracklib: 'pam_cracklib'
 os_pamd_config_files:
   - "password-auth"
   - "system-auth"
+
+# Req 48
+iptables_package_name: "iptables-services"
 
 # Req 52:	If a system has Internet facing services or is a virtualization host,
 # a MAC solution must be used.

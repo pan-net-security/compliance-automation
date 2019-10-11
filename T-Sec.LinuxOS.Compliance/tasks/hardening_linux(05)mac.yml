@@ -72,6 +72,11 @@
 
 # Logging will be configured with Req 37 if enabled.
 
+
+- name: Make sure the grub tool exists
+  package:
+    name: "{{ grub_update_tool_package }}"
+
 # Req 58:	If AppArmor is used, it must not be disabled in bootloader configuration.
 
 - name: req-058.1 enable apparmor in grub
