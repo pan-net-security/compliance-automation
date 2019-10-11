@@ -43,15 +43,15 @@
   when: disable_rsync and ansible_distribution_version == "14.04"
 
 - name: req-001.6 disable rsync service (not 14.04)
-  register: result
+  register: result_001_6
   systemd:
     name: "{{ rsync_deamon }}"
     state: stopped
     enabled: no
   when: disable_rsync and ansible_distribution_version != "14.04"
   failed_when:
-    - "'Could not find the requested service rsync' not in result.msg|d('')"
-    - result.failed|d(false)
+    - "'Could not find the requested service rsync' not in result_001_6.msg|d('')"
+    - result_001_6.failed|d(false)
 
 # Req 2: The reachability of services must be restricted.
 
@@ -112,9 +112,6 @@
   with_items:
     - "{{ filesystems }}"
   when: disable_filesystems|bool
-  failed_when:
-    - "'No such file or directory' not in result.msg|d('')"
-    - result.failed|d(false)
 
 # Req 5:	Dedicated partitions must be used for growing content that can
 # influence the availability of the system.
@@ -305,6 +302,7 @@
 # Req 17:	IPv4 protocol stack must be securely configured.
 
 - name: req-017.1 change sysctl-settings for ipv4
+  register: result_017_1
   sysctl:
     name: '{{ item.key }}'
     value: '{{ item.value }}'
@@ -314,12 +312,13 @@
   with_dict: '{{ network_config_ipv4 }}'
   when: config_network_ipv4|bool
   failed_when:
-      - "'No such file or directory' not in result.msg|d('')"
-      - result.failed|d(false)
+      - "'No such file or directory' not in result_017_1.msg|d('')"
+      - result_017_1.failed|d(false)
 
 # Req 18:	IPv6 protocol stack must be securely configured.
 
 - name: req-018.1 change sysctl-settings if ipv6 is disabled
+  register: result_018_1
   sysctl:
     name: '{{ item.key }}'
     value: '{{ item.value }}'
@@ -329,10 +328,11 @@
   with_dict: '{{ network_config_ipv6_disabled }}'
   when: config_network_ipv6 and not config_ipv6_enable
   failed_when:
-      - "'No such file or directory' not in result.msg|d('')"
-      - result.failed|d(false)
+      - "'No such file or directory' not in result_018_1.msg|d('')"
+      - result_018_1.failed|d(false)
 
 - name: req-018.2 change sysctl-settings if ipv6 is enabled
+  register: result_018_2
   sysctl:
     name: '{{ item.key }}'
     value: '{{ item.value }}'
@@ -343,8 +343,8 @@
   when: config_network_ipv6 and
      ( config_ipv6_enable or config_mgmt_interface_ipv6 )
   failed_when:
-      - "'No such file or directory' not in result.msg|d('')"
-      - result.failed|d(false)
+      - "'No such file or directory' not in result_018_2.msg|d('')"
+      - result_018_2.failed|d(false)
 
 # Req 19:	Emerged vulnerabilities in software and hardware of a system must be
 # fixed or protected against misuse.
