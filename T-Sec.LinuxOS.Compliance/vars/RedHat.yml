@@ -31,6 +31,7 @@ nologin_path: /sbin/nologin
 ntp_software: "chrony"
 ntp_deamon: "chronyd"
 ntp_config_file: "chrony-config.j2"
+timezone_package: "tzdata"
 
 # Req 33:	Auditd service must be used to log security relevant events.
 audit_software: "audit"

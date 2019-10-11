@@ -43,11 +43,15 @@
   when: disable_rsync and ansible_distribution_version == "14.04"
 
 - name: req-001.6 disable rsync service (not 14.04)
+  register: result
   systemd:
     name: "{{ rsync_deamon }}"
     state: stopped
     enabled: no
   when: disable_rsync and ansible_distribution_version != "14.04"
+  failed_when:
+    - "'Could not find the requested service rsync' not in result.msg|d('')"
+    - result.failed|d(false)
 
 # Req 2: The reachability of services must be restricted.
 
@@ -55,7 +59,7 @@
   apt:
     update_cache: yes
   when: ansible_os_family == "Debian"
-  
+
 - name: req-002.1 install iptables
   package:
     name: 'iptables'
@@ -108,6 +112,9 @@
   with_items:
     - "{{ filesystems }}"
   when: disable_filesystems|bool
+  failed_when:
+    - "'No such file or directory' not in result.msg|d('')"
+    - result.failed|d(false)
 
 # Req 5:	Dedicated partitions must be used for growing content that can
 # influence the availability of the system.
@@ -306,6 +313,9 @@
     reload: yes
   with_dict: '{{ network_config_ipv4 }}'
   when: config_network_ipv4|bool
+  failed_when:
+      - "'No such file or directory' not in result.msg|d('')"
+      - result.failed|d(false)
 
 # Req 18:	IPv6 protocol stack must be securely configured.
 
@@ -318,6 +328,9 @@
     reload: yes
   with_dict: '{{ network_config_ipv6_disabled }}'
   when: config_network_ipv6 and not config_ipv6_enable
+  failed_when:
+      - "'No such file or directory' not in result.msg|d('')"
+      - result.failed|d(false)
 
 - name: req-018.2 change sysctl-settings if ipv6 is enabled
   sysctl:
@@ -329,6 +342,9 @@
   with_dict: '{{ network_config_ipv6_enabled }}'
   when: config_network_ipv6 and
      ( config_ipv6_enable or config_mgmt_interface_ipv6 )
+  failed_when:
+      - "'No such file or directory' not in result.msg|d('')"
+      - result.failed|d(false)
 
 # Req 19:	Emerged vulnerabilities in software and hardware of a system must be
 # fixed or protected against misuse.

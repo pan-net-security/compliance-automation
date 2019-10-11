@@ -104,7 +104,7 @@
       ( config_mac and config_apparmor_enforced )
 
 - name: req-048.2 enforce apparmor profiles
-  shell: aa-enforce /etc/apparmor.d/usr* >/dev/null 2>&1
+  shell: aa-enforce /etc/apparmor.d/usr* 
   changed_when: false
   when: mac_type == "apparmor" and
       ( config_mac and config_apparmor_enforced )
