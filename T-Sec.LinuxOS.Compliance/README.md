@@ -1,37 +1,20 @@
-# T-Sec Compliance Automation for Linux OS for Servers
+# Hardening for Linux OS Servers
 
-Company: [T-systems International GmbH](https://www.t-systems.com)
-
-Author: [Telekom Security](https://security.telekom.com/)   
-
-E-Mail: [security.automation@telekom.de](security.automation@telekom.de)
-
-Version: 0.9
-
-Date: 05. Feb 2019
-
--------------------------------------------------------------------------------
 
 ## Description
 
 This Ansible role can be used to implement hardening of the Linux OS on
 servers. The hardening will be done following the security requirements
-from Telekom Security (see 'References' for used versions of document).
+from Deutsche Telekom Security (see 'References' for used versions of document).
 
 ## Supported Platforms
 
-Ansible version: 2.7.x
-Python version: 2.7.x
+Ansible version >= 2.6.x
+Python version >= 3.5
 
 The role is tested with the following Linux versions:
 
-  * Ubuntu 14.04 LTS
-  * Ubuntu 16.04 LTS
   * Ubuntu 18.04 LTS
-  * RedHat Enterprise Linux 7.x
-  * CentOS 7.x
-  * Oracle Linux 7.x
-  * Amazon Linux 2
 
 -------------------------------------------------------------------------------
 
@@ -39,53 +22,6 @@ The role is tested with the following Linux versions:
 is not tested with desktop systems and can cause unexpected malfunctions.
 
 -------------------------------------------------------------------------------
-
-## Preconditions to use Ansible
-
-Ansible is agent-free. This means no agent is needed on systems that should be
-configured with Ansible. But Ansible uses python. Python must be installed on
-systems to be managed with Ansible!
-
-Ansible uses SSH to connect to remote systems. To connect and to perform all
-tasks a user is needed on the system that should be hardened. This user needs
-root privileges and must be member of sudo group. Needed parameters for the user
-can be defined in inventory or playbook file (see next chapter).
-
-------------------------------------------------------------------------------
-
-**IMPORTANT:** Don't use user 'root' to execute this role. The role will disable
-local and remote login via SSH for user 'root'! Create your own user with root
-rights and sudo group membership.
-
--------------------------------------------------------------------------------
-
-## Inventory
-
-Ansible by default uses the `/etc/ansible/hosts` file to specify hosts and
-needed parameters.
-
-To use your own 'hosts' file use:
-```
-$ ansible-playbook -i <location-of-host-file> <playbook>.yml
-```
-
-Example of 'hosts' file:
-```
-[test-system]
-test ansible_host=127.0.0.1
-
-[test-system:vars]
-ansible_port=2222
-ansible_user=vagrant
-ansible_ssh_pass=vagrant
-```
-
-This is fine for testing purposes. In case of productive environments a dynamic
-inventory triggered by the used orchestration should be used.
-
-More information:
-* [Intro to Ansible inventory](http://docs.ansible.com/ansible/latest/intro_inventory.html)
-* [Dynamic Inventory](http://docs.ansible.com/ansible/latest/intro_dynamic_inventory.html)
 
 ## Role
 
@@ -99,45 +35,52 @@ roles_path    = ~/roles
 
 ## Variables
 
-The default variables are located in the file '/default/main.yml'. Before
-execution of the playbook please change this variables following the demands
-of the systems you like to harden.
+The default variables are located in:
+```
+defaults/
+└── main
+    ├── main.yml
+    ├── linux(01)basic-hardening.yml
+    ├── linux(02)logging.yml
+    ├── linux(03)pam.yml
+    ├── linux(04)iptables.yml
+    └── linux(05)mac.yml
+```
+ Before execution of the playbook please set this variables following the demands of the systems you like to harden.
+
 
 | Name           | Default Value | Description                        |
 | -------------- | ------------- | -----------------------------------|
-| 'config_iptables_rules_tcp' | true | Defines if TCP iptables rules should be configured. |
-| 'tcp_services' | 22 | Defines needed TCP ports.|
-| 'config_iptables_rules_udp' | true | Defines if UDP iptables rules should be configured. |
-| 'tcp_services' | none | Defines needed UDP ports.|
-| 'config_partitions' | false | Defines if separate partitions are used. |
-| 'partitions' | tmp, var | Defines existing partitions. |
-| 'config_ipv6_enable' | false | Enables if IPv6 should be used. |
-| 'do_system_upgrade' | false | Defines if a system upgrade should be performed .|
-| 'config_mgmt_interface_ipv4' | false | Specifies if a dedicated IPv4 management interface is used. |
-| 'mgmt_interface_ipv4' | 0.0.0.0 | Defines IPv4 address of management interface. |
-| 'config_mgmt_interface_ipv6' | false | Enable if (true) a dedicated IPv6 management interface is used. |
-| 'mgmt_interface_ipv6' | :: | Defines IPv6 address for management interface. |
-| 'config_ntp' | true | Defines if NTP should be configured. |
-| 'ntp_servers' | ntp-pool-info_ntpp10.telekom.de, ntp-pool-info_ntpp21.telekom.de | Defines addresses of NTP servers to use. |
-| 'set_timezone' | true | Defines if time zone should be configured. |
-| 'use_timezone' | Europe/Berlin | Defines time zone to use. |
-| 'config_syslog' | false |  Defines if Syslog should be configured. |
-| 'syslog_type' | rsyslog | Defines type of syslog to use. |
-| 'syslog_server' |  | Defines IP addresses of Syslog server(s) to use. |
-| 'config_restart_handlers' | true | Defines whether service restart handlers should be triggered. |
+| `config_iptables_rules_tcp` | `true` | Defines if TCP iptables rules should be configured. |
+| `tcp_services` | `22` | Defines needed TCP ports.|
+| `config_iptables_rules_udp` | `true` | Defines if UDP iptables rules should be configured. |
+| `tcp_services` | none | Defines needed UDP ports.|
+| `config_partitions` | `false` | Defines if separate partitions are used. |
+| `partitions` | `tmp, var` | Defines existing partitions. |
+| `config_ipv6_enable` | `false` | Enables if IPv6 should be used. |
+| `do_system_upgrade` | `false` | Defines if a system upgrade should be performed .|
+| `config_mgmt_interface_ipv4` | `false` | Specifies if a dedicated IPv4 management interface is used. |
+| `mgmt_interface_ipv4` | `0.0.0.0` | Defines IPv4 address of management interface. |
+| `config_mgmt_interface_ipv6` | `false` | Enable if (true) a dedicated IPv6 management interface is used. |
+| `mgmt_interface_ipv6` | `::` | Defines IPv6 address for management interface. |
+| `config_ntp` | `true` | Defines if NTP should be configured. |
+| `ntp_servers` | `ntp-pool-info_ntpp10.telekom.de`, `ntp-pool-info_ntpp21.telekom.de` | Defines addresses of NTP servers to use. |
+| `set_timezone` | `true` | Defines if time zone should be configured. |
+| `use_timezone` | `Europe/Berlin` | Defines time zone to use. |
+| `config_syslog` | `false` |  Defines if Syslog should be configured. |
+| `syslog_type` | `rsyslog` | Defines type of syslog to use. |
+| `syslog_server` |  | Defines IP addresses of Syslog server(s) to use. |
+| `config_restart_handlers` | `true` | Defines whether service restart handlers should be triggered. |
 
-Additional variables are located in the following files in directory '/vars':
+Additional variables are located in the following files in directory `/vars` and are meant to be _hardcoded_ values meant for distribution differences.
 
-* /vars
-  * /main.yml
-  * /RedHat.yml
-  * /Ubuntu-18.yml
-  * /Ubuntu.yml
-  * /vars_linux(01)basic-hardening.yml
-  * /vars_linux(02)logging.yml
-  * /vars_linux(03)pam.yml
-  * /vars_linux(04)iptables.yml
-  * /vars_linux(05)mac.yml
+```
+vars/
+├── RedHat.yml
+├── Ubuntu-18.yml
+├── Ubuntu.yml
+└── main.yml
+```
 
 -------------------------------------------------------------------------------
 
@@ -202,13 +145,6 @@ The following requirements are not included as they are regular compliance check
 * Req 68: The shadow group must be empty (only Ubuntu Linux).
 * Req 69: No files and directories without assigned user or group must exist.
 * Req 70:	Permissions of security relevant configuration files must have the distribution default values or more restrictive.
-
-## Development
-
-```
-pip3 install molecule molecule[vagrant] python-vagrant
-molecule test
-```
 
 ## License
 

@@ -35,6 +35,10 @@ mv $TEMP_DIR/T-Sec.* /etc/ansible/roles
 rm -fr $TEMP_DIR
 ```
 
+# Development
+
+Refer to each role's README inside their directory.
+
 ## References
 
 Telekom Security - Security Requirements:
