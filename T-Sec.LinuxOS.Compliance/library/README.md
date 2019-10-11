@@ -1,0 +1,2 @@
+modprobe is here because of a regression since Ansible 2.8 which remains \
+unaddressed by a stale open PR [ansible/ansible#58839](https://github.com/ansible/ansible/pull/58839#pullrequestreview-259546330)
