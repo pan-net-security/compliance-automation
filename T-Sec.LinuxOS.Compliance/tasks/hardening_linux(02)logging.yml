@@ -36,9 +36,20 @@
     state: present
   when: config_ntp|bool
 
+# - name: req-032.2 set time zone
+#   command: timedatectl set-timezone {{ use_timezone }}
+#   changed_when: false
+#   when: config_ntp and set_timezone
+
+- name: req-032.2 install timezone package
+  package:
+    name: "{{ timezone_package }}"
+    state: present
+  when: set_timezone|bool
+
 - name: req-032.2 set time zone
-  command: timedatectl set-timezone {{ use_timezone }}
-  changed_when: false
+  timezone:
+    name: "{{ use_timezone }}"
   when: config_ntp and set_timezone
 
 - name: req-032.3 change ntp.conf

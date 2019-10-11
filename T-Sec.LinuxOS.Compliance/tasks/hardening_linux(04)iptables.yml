@@ -7,6 +7,11 @@
 
 # Req 48:	If iptables is used, policies for loopback traffic must be configured.
 
+- name: req-032.1 install ntp/chrony
+  package:
+    name: "{{ iptables_package_name }}"
+    state: present
+
 - name: req-048.1 configure loopback traffic input rule
   iptables:
     chain: INPUT
