@@ -203,6 +203,13 @@ The following requirements are not included as they are regular compliance check
 * Req 69: No files and directories without assigned user or group must exist.
 * Req 70:	Permissions of security relevant configuration files must have the distribution default values or more restrictive.
 
+## Development
+
+```
+pip3 install molecule molecule[vagrant] python-vagrant
+molecule test
+```
+
 ## License
 
 Apache License, Version 2.0

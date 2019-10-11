@@ -58,6 +58,7 @@
 - name: Refresh the apt cache on Debian-based systems
   apt:
     update_cache: yes
+    cache_valid_time: 3600
   when: ansible_os_family == "Debian"
 
 - name: req-002.1 install iptables
