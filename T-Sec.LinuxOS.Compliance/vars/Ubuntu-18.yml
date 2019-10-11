@@ -11,6 +11,7 @@
 #
 # ========================================================================
 
+grub_update_tool_package: "grub2-common"
 grub_update_tool: "update-grub"
 
 # Req 1: Unused services and protocols must be deactivated.
@@ -32,6 +33,7 @@ nologin_path: /usr/sbin/nologin
 ntp_software: "chrony"
 ntp_deamon: "chrony"
 ntp_config_file: "chrony-config.j2"
+timezone_package: "tzdata"
 
 # Req 33:	Auditd service must be used to log security relevant events.
 audit_software: "auditd"
@@ -70,6 +72,9 @@ os_specific_change_events:
 os_pam_cracklib: 'libpam-cracklib'
 os_pamd_config_files:
   - "common-password"
+
+# Req 48
+iptables_package_name: "iptables"
 
 # Req 52:	If a system has Internet facing services or is a virtualization host,
 # a MAC solution must be used.
