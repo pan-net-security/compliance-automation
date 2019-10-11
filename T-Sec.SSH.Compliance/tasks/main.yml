@@ -41,9 +41,5 @@
     key: "{{ lookup('file', public_key_file) }}"
   when: config_new_user
 
-# 01 ssh requirements
-- name: "Include Variables"
-  include_vars: vars_ssh(01)ssh-requirements.yml
-
 - name: "Import Tasks"
   import_tasks: hardening_ssh(01)ssh-requirements.yml
