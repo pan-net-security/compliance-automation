@@ -5,7 +5,7 @@
   become: true
   tasks:
     - name: "Install required packages for testing"
-      apt:
+      package:
         name:
           - openssh-server
         state: present
