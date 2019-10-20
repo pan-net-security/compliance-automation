@@ -52,3 +52,4 @@
 - import_tasks: hardening_linux(03)pam.yml
 - import_tasks: hardening_linux(04)iptables.yml
 - import_tasks: hardening_linux(05)mac.yml
+- import_tasks: hardening_linux(06)regular.yml
