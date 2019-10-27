@@ -2,5 +2,7 @@
 - name: Converge
   hosts: all
   become: true
+  vars:
+    debug: true
   roles:
     - role: T-Sec.LinuxOS.Compliance
