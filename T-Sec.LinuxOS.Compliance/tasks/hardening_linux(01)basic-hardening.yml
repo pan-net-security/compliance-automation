@@ -221,17 +221,24 @@
   when: config_umask|bool
 
 # Req 13:	Not needed SUID and SGID bits must be removed from executables.
+- name: req-013.1 - Error handling
+  block:
+      - name: req-013.1 find binaries with suid/sgid set
+        shell: >-
+            df --local -P | awk {'if (NR!=1) print $6'} | xargs -I '{}' find '{}'
+            {%- for dir in suid_sgid_whitelist_dir|d([])  %}
+              -not -path "{{ dir }}/*"
+            {%- endfor %} -xdev -type f \( -perm -4000 -o -perm -2000 \) -print 2>/dev/null
+        register: sbit_binaries
+        changed_when: false
+        when: config_suid_sgid|bool
+        no_log: "{{ long_output_protection|default(true) }}"
+  rescue:
+     - debug:
+         var: sbit_binaries.stdout|d()
+     - fail:
+        msg: "The task earlier, check the output value of 'sbit_binaries.stdout'."
 
-- name: req-013.1 find binaries with suid/sgid set
-  shell: >-
-      df --local -P | awk {'if (NR!=1) print $6'} | xargs -I '{}' find '{}'
-      {%- for dir in suid_sgid_whitelist_dir|d([])  %}
-        -not -path "{{ dir }}/*"
-      {%- endfor %} -xdev -type f \( -perm -4000 -o -perm -2000 \) -print 2>/dev/null
-  register: sbit_binaries
-  changed_when: false
-  when: config_suid_sgid|bool
-  no_log: "{{ long_output_protection|default(true) }}"
 
 - name: req-013.2 combine found files with default whitelist
   set_fact:
