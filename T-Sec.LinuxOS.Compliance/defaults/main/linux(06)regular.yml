@@ -1,0 +1,8 @@
+---
+unassigned_user_whitelist_dir:
+    - /var/lib
+    - /proc
+
+unassigned_group_whitelist_dir:
+    - /var/lib
+    - /proc

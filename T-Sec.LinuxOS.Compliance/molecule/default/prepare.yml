@@ -7,5 +7,51 @@
     - name: "Install packages for testing under docker"
       package:
         name:
-          - openssh-server
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - software-properties-common
         state: present
+        update_cache: yes
+
+    - name: "Add an Apt signing key, will not download if present"
+      apt_key:
+        id: 0EBFCD88
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+
+    - name: "Add Docker APT repository"
+      apt_repository:
+        repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable"
+        state: present
+
+    - name: "Install latest docker-related packages"
+      apt:
+        name:
+          - docker-ce
+          - docker-ce-cli
+          - containerd.io
+        state: present
+        update_cache: yes
+
+    - name: "Add /etc/docker/daemon.json"
+      copy:
+        dest: /etc/docker/daemon.json
+        content: {}
+        owner: root
+        group: root
+        mode: '0640'
+
+    - name: "Restart docker"
+      service:
+        name: docker
+        state: restarted
+
+    - name: Container present
+      command: "docker run {{ item }} date"
+      with_items:
+        - centos
+        - ubuntu:16.04
+        - ubuntu:18.04
+        - debian
+        - alpine
