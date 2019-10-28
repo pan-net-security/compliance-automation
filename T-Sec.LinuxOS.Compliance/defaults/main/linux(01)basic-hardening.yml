@@ -98,7 +98,9 @@ umask: "027"
 
 # Req 13:	Not needed SUID and SGID bits must be removed from executables.
 config_suid_sgid: true
-suid_sgid_whitelist:
+suid_sgid_whitelist_dir:
+  - '/var/lib'
+suid_sgid_whitelist_file:
   - '/bin/ping'
   - '/sbin/pam_timestamp_check'
   - '/sbin/unix_chkpwd'
@@ -136,6 +138,7 @@ suid_sgid_whitelist:
   - '/usr/sbin/ccreds_validate'
   - '/usr/lib/dbus-1.0/dbus-daemon-launch-helper'
   - '/usr/lib/policykit-1/polkit-agent-helper-1'
+  - '/var/lib/docker'
 
 # Req 14:	Core dumps must be disabled.
 config_coredumps: true

@@ -1,56 +1,3 @@
-# scenario:
-#   name: default
-#   test_sequence:
-#     - dependency
-#     - lint
-#     - cleanup
-#     - destroy
-#     - syntax
-#     - create
-#     - prepare
-#     - converge
-#     #- idempotence
-#     - side_effect
-#     - verify
-#     - cleanup
-#     - destroy
-# driver:
-#   name: vagrant
-#   provider:
-#     name: virtualbox
-# platforms:
-#   - name: instance
-#     box: "${MOLECULE_DISTRO:-centos}/${MOLECULE_DISTRO_VERSION:-7}"
-#     memory: 1024
-#     cpus: 1
-#     # https://github.com/ansible/molecule/issues/1556
-#     provider_raw_config_args:
-#     - "customize [ 'modifyvm', :id, '--uartmode1', 'disconnected' ]"
-
-# provisioner:
-#   name: ansible
-#   lint:
-#     name: ansible-lint
-#     enabled: false
-#   playbooks:
-#     prepare: ../prepare.yml
-#     converge: ../playbook.yml
-# lint:
-#   name: yamllint
-#   enabled: false
-# verifier:
-#   name: testinfra
-#   directory: ../tests/
-#   env:
-#     # get rid of the DeprecationWarning messages of third-party libs,
-#     # see https://docs.pytest.org/en/latest/warnings.html#deprecationwarning-and-pendingdeprecationwarning
-#     PYTHONWARNINGS: "ignore:.*U.*mode is deprecated:DeprecationWarning"
-#   lint:
-#     name: flake8
-#   options:
-#     # show which tests where executed in test output
-#     v: 1
-
 ---
 dependency:
   name: galaxy
@@ -71,6 +18,9 @@ platforms:
     - "customize [ 'modifyvm', :id, '--uartmode1', 'disconnected' ]"
 provisioner:
   name: ansible
+  config_options:
+    defaults:
+      callback_whitelist: "profile_tasks, timer"
   lint:
     name: ansible-lint
     enabled: false

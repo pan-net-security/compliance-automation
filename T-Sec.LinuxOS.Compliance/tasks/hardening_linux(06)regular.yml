@@ -103,19 +103,43 @@
 # /var/lib can contain:
 # - systemd DynamicUsers
 # - docker volumes
-- name: req-69.1 No files and directories without assigned user or group must exist.
-  shell: find / -not -path "/var/lib/*" -nouser 2>/dev/null
-  register: files_no_user
-  failed_when:
-    - files_no_user.stdout != ''
-  changed_when: False
-  check_mode: no
+- name: req-69.1 - Error handling
+  block:
+      - name: req-69.1 No files and directories without assigned user or group must exist.
+        shell: >-
+            find /
+            {%- for dir in unassigned_user_whitelist_dir|d([])  %}
+              -not -path "{{ dir }}/*"
+            {%- endfor %} -nouser 2>/dev/null
+        register: files_no_user
+        failed_when:
+          - files_no_user.stdout != ''
+        changed_when: False
+        check_mode: no
+        no_log: "{{ long_output_protection|d(True) or files_no_user.stdout != '' }}"
+  rescue:
+     - debug:
+         var: files_no_user.stdout|d()
+     - fail:
+        msg: "The task earlier, check the output value of 'files_no_user.stdout'."
 
-- name: req-69.2 No files and directories without assigned user or group must exist.
-  shell: find / -not -path "/var/lib/*" -nogroup 2>/dev/null
-  register: files_no_group
-  failed_when:
-    - files_no_group.stdout != ''
-    - "'/var/lib/private/systemd/timesync' not in files_no_user.split('\n')|d([])"
-  changed_when: False
-  check_mode: no
+- name: req-69.2 - Error handling
+  block:
+      - name: req-69.2 No files and directories without assigned user or group must exist.
+        shell: >-
+            find /
+            {%- for dir in unassigned_group_whitelist_dir|d([])  %}
+              -not -path "{{ dir }}/*"
+            {%- endfor %} -nogroup 2>/dev/null
+        register: files_no_group
+        failed_when:
+          - files_no_group.stdout != ''
+          - "'/var/lib/private/systemd/timesync' not in files_no_user.split('\n')|d([])"
+        changed_when: False
+        check_mode: no
+        no_log: "{{ long_output_protection|d(True) or files_no_group.stdout != '' }}"
+  rescue:
+     - debug:
+         var: files_no_group.stdout|d()
+     - fail:
+        msg: "The task earlier, check the output value of 'files_no_group.stdout'."
